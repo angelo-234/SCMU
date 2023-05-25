@@ -18,48 +18,17 @@ import { TextInput, NumberInput } from "react-native-gesture-handler";
 import { useState } from "react";
 
 function Create() {
-    const [classTitle, setClassTitle] = useState("");
-    const [classLotation, setClassLotation] = useState("");
-    const [classDescription, setClassDescription] = useState("");
-    const [classDay, setClassDay] = useState("");
-    const [classMonth, setClassMonth] = useState("");
-    const [classHour, setClassHour] = useState("");
+    const [bathroomID, setClassTitle] = useState("");
     const router = useRouter();
 
     function CreateClass(
-        classTitle,
-        classLotation,
-        classDay,
-        classMonth,
-        classHour,
-        classDescription
     ) {
-        const date = new Date(0);
-        date.setUTCDate(classDay);
-        date.setUTCMonth(classMonth - 1);
-        date.setUTCHours(classHour);
-        date.setUTCFullYear(2023);
-        date.setUTCMilliseconds(555);
-
-        const dateString = date.toISOString();
-
-        const Lotation = parseInt(classLotation);
-        console.log(classLotation);
-        console.log(Lotation);
-
-        fetch("http://localhost:5000/Class", {
+        fetch("http://localhost:8080/bathroom/1", {
             method: "POST",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                lotation: Lotation,
-                subject: classTitle,
-                description: classDescription,
-                date: dateString,
-                participants: 0,
-            }),
             mode: "cors",
         })
             .then((response) => {
@@ -74,7 +43,7 @@ function Create() {
     return (
         <View style={styles.container}>
             <View style={styles.Middle}>
-                <Text style={styles.LoginText}>Create Class</Text>
+                <Text style={styles.LoginText}>Bathroom ID</Text>
             </View>
             <View style={styles.text2}>
                 <Text> Please enter the class information!</Text>
@@ -98,7 +67,7 @@ function Create() {
                             />
                         }
                         variant='outline'
-                        placeholder='Class Title'
+                        placeholder='Bathroom ID'
                         _light={{
                             placeholderTextColor: "blueGray.400",
                         }}
@@ -111,167 +80,12 @@ function Create() {
                 </View>
             </View>
 
-            {/* Class Duration Input Field */}
-            <View style={styles.buttonStyleX}>
-                <View style={styles.emailInput}>
-                    <Input
-                        InputLeftElement={
-                            <Icon
-                                as={<FontAwesome5 name='hourglass' />}
-                                size='sm'
-                                m={2}
-                                _light={{
-                                    color: "black",
-                                }}
-                                _dark={{
-                                    color: "gray.300",
-                                }}
-                            />
-                        }
-                        variant='outline'
-                        placeholder='Class Lotation'
-                        _light={{
-                            placeholderTextColor: "blueGray.400",
-                        }}
-                        _dark={{
-                            placeholderTextColor: "blueGray.50",
-                        }}
-                        onChangeText={(number) => setClassLotation(number)}
-                    />
-                </View>
-            </View>
-
-            {/* Class Time Input Field */}
-            <View style={styles.buttonStyleX}>
-                <View style={styles.emailInput}>
-                    <Input
-                        InputLeftElement={
-                            <Icon
-                                as={<FontAwesome5 name='clock' />}
-                                size='sm'
-                                m={2}
-                                _light={{
-                                    color: "black",
-                                }}
-                                _dark={{
-                                    color: "gray.300",
-                                }}
-                            />
-                        }
-                        variant='outline'
-                        placeholder='Class Day'
-                        _light={{
-                            placeholderTextColor: "blueGray.400",
-                        }}
-                        _dark={{
-                            placeholderTextColor: "blueGray.50",
-                        }}
-                        type='classDay'
-                        onChangeText={(text) => setClassDay(text)}
-                    />
-                </View>
-            </View>
-            <View style={styles.buttonStyleX}>
-                <View style={styles.emailInput}>
-                    <Input
-                        InputLeftElement={
-                            <Icon
-                                as={<FontAwesome5 name='clock' />}
-                                size='sm'
-                                m={2}
-                                _light={{
-                                    color: "black",
-                                }}
-                                _dark={{
-                                    color: "gray.300",
-                                }}
-                            />
-                        }
-                        variant='outline'
-                        placeholder='Class Month'
-                        _light={{
-                            placeholderTextColor: "blueGray.400",
-                        }}
-                        _dark={{
-                            placeholderTextColor: "blueGray.50",
-                        }}
-                        type='classTime'
-                        onChangeText={(text) => setClassMonth(text)}
-                    />
-                </View>
-            </View>
-            <View style={styles.buttonStyleX}>
-                <View style={styles.emailInput}>
-                    <Input
-                        InputLeftElement={
-                            <Icon
-                                as={<FontAwesome5 name='clock' />}
-                                size='sm'
-                                m={2}
-                                _light={{
-                                    color: "black",
-                                }}
-                                _dark={{
-                                    color: "gray.300",
-                                }}
-                            />
-                        }
-                        variant='outline'
-                        placeholder='Class Hour'
-                        _light={{
-                            placeholderTextColor: "blueGray.400",
-                        }}
-                        _dark={{
-                            placeholderTextColor: "blueGray.50",
-                        }}
-                        type='classHour'
-                        onChangeText={(text) => setClassHour(text)}
-                    />
-                </View>
-            </View>
-
-            {/* Class Description Input Field */}
-            <View style={styles.buttonStyleX}>
-                <View style={styles.emailInput}>
-                    <Input
-                        InputLeftElement={
-                            <Icon
-                                as={<FontAwesome5 name='quote-left' />}
-                                size='sm'
-                                m={2}
-                                _light={{
-                                    color: "black",
-                                }}
-                                _dark={{
-                                    color: "gray.300",
-                                }}
-                            />
-                        }
-                        variant='outline'
-                        placeholder='Class Description'
-                        _light={{
-                            placeholderTextColor: "blueGray.400",
-                        }}
-                        _dark={{
-                            placeholderTextColor: "blueGray.50",
-                        }}
-                        type='classDiscription'
-                        onChangeText={(text) => setClassDescription(text)}
-                    />
-                </View>
-            </View>
-
             {/* Button */}
             <View style={styles.buttonStyle}>
                 <Button
                     onPress={() => {
                         CreateClass(
-                            classTitle,
-                            classLotation,
-                            classDay,
-                            classMonth,
-                            classHour,
-                            classDescription
+                            bathroomID
                         );
                     }}
                     style={styles.buttonDesign}>
