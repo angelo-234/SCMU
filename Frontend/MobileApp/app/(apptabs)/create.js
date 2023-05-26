@@ -20,10 +20,12 @@ import { useState } from "react";
 function Create() {
     const [bathroomID, setClassTitle] = useState("");
     const router = useRouter();
+    const bathroomNumber = 0;
 
-    function CreateClass(
+    function addBathroom(
     ) {
-        fetch("http://localhost:8080/bathroom/1", {
+        bathroomNumber++;
+        fetch("http://localhost:8080/bathroom/" + bathroomNumber, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -37,59 +39,29 @@ function Create() {
             })
             .catch((error) => {
                 console.error(error);
+                bathroomNumber--;
             });
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.Middle}>
-                <Text style={styles.LoginText}>Bathroom ID</Text>
+                <Text style={styles.LoginText}>Create Bathroom</Text>
             </View>
             <View style={styles.text2}>
                 <Text> Please enter the class information!</Text>
             </View>
 
-            {/* Class Name Input Field */}
-            <View style={styles.buttonStyle}>
-                <View style={styles.emailInput}>
-                    <Input
-                        InputLeftElement={
-                            <Icon
-                                as={<FontAwesome5 name='marker' />}
-                                size='sm'
-                                m={2}
-                                _light={{
-                                    color: "black",
-                                }}
-                                _dark={{
-                                    color: "gray.300",
-                                }}
-                            />
-                        }
-                        variant='outline'
-                        placeholder='Bathroom ID'
-                        _light={{
-                            placeholderTextColor: "blueGray.400",
-                        }}
-                        _dark={{
-                            placeholderTextColor: "blueGray.50",
-                        }}
-                        type='classTitle'
-                        onChangeText={(text) => setClassTitle(text)}
-                    />
-                </View>
-            </View>
-
+            
             {/* Button */}
             <View style={styles.buttonStyle}>
                 <Button
                     onPress={() => {
-                        CreateClass(
-                            bathroomID
+                        addBathroom(
                         );
                     }}
                     style={styles.buttonDesign}>
-                    CREATE
+                    ADD BATHROOM
                 </Button>
             </View>
 

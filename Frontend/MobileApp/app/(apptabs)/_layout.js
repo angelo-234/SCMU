@@ -44,9 +44,9 @@ export default function Layout() {
                 }}
             />
             <Tabs.Screen
-                name='profile'
+                name='reserve'
                 options={{
-                    title: "Profile",
+                    title: "Reserve",
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name='person' color={color} size={size} />
                     ),
