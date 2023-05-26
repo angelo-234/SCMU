@@ -20,14 +20,36 @@ import { useState } from "react";
 function Create() {
     const [bathroomID, setBathroomID] = useState("");
     const [slotID, setSlotID] = useState("");
+    const [bathroomID2, setBathroomID2] = useState("");
+    const [slotID2, setSlotID2] = useState("");
     const router = useRouter();
 
-    function CreateClass(
+    function ReserveSlot(
         // bathroomID,
         // slotID,
     ) {
 
-        fetch("http://localhost:8080/bathroom/" + bathroomID + "/" + slotID, {
+        fetch("http://localhost:8080/bathroom/reserve/" + bathroomID + "/" + slotID, {
+            method: "POST",
+            headers: {
+            },
+            mode: "cors",
+        })
+            .then((response) => {
+                console.log(response);
+                router.push("/home");
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    function CancelReservation(
+        // bathroomID,
+        // slotID,
+    ) {
+
+        fetch("http://localhost:8080/bathroom/unreserve/" + bathroomID2 + "/" + slotID2, {
             method: "POST",
             headers: {
             },
@@ -116,13 +138,95 @@ function Create() {
             <View style={styles.buttonStyle}>
                 <Button
                     onPress={() => {
-                        CreateClass(
+                        ReserveSlot(
                             // bathroomID,
                             // slotID,
                         );
                     }}
                     style={styles.buttonDesign}>
                     RESERVE
+                </Button>
+            </View>
+
+            <View style={styles.Middle}>
+                <Text style={styles.LoginText}>Cancel Bathroom Slot Reservation</Text>
+            </View>
+            <View style={styles.text2}>
+                <Text> Please enter the desired slot!</Text>
+            </View>
+
+            {/* Bathroom ID 2 Input Field */}
+            <View style={styles.buttonStyle}>
+                <View style={styles.emailInput}>
+                    <Input
+                        InputLeftElement={
+                            <Icon
+                                as={<FontAwesome5 name='marker' />}
+                                size='sm'
+                                m={2}
+                                _light={{
+                                    color: "black",
+                                }}
+                                _dark={{
+                                    color: "gray.300",
+                                }}
+                            />
+                        }
+                        variant='outline'
+                        placeholder='Bathroom ID'
+                        _light={{
+                            placeholderTextColor: "blueGray.400",
+                        }}
+                        _dark={{
+                            placeholderTextColor: "blueGray.50",
+                        }}
+                        type='classTitle'
+                        onChangeText={(text) => setBathroomID2(text)}
+                    />
+                </View>
+            </View>
+
+            {/* Slot ID 2 Input Field */}
+            <View style={styles.buttonStyleX}>
+                <View style={styles.emailInput}>
+                    <Input
+                        InputLeftElement={
+                            <Icon
+                                as={<FontAwesome5 name='hourglass' />}
+                                size='sm'
+                                m={2}
+                                _light={{
+                                    color: "black",
+                                }}
+                                _dark={{
+                                    color: "gray.300",
+                                }}
+                            />
+                        }
+                        variant='outline'
+                        placeholder='Slot ID'
+                        _light={{
+                            placeholderTextColor: "blueGray.400",
+                        }}
+                        _dark={{
+                            placeholderTextColor: "blueGray.50",
+                        }}
+                        onChangeText={(number) => setSlotID2(number)}
+                    />
+                </View>
+            </View>
+
+            {/* Button */}
+            <View style={styles.buttonStyle}>
+                <Button
+                    onPress={() => {
+                        CancelReservation(
+                            // bathroomID2,
+                            // slotID2,
+                        );
+                    }}
+                    style={styles.buttonDesign}>
+                    CANCEL
                 </Button>
             </View>
 
