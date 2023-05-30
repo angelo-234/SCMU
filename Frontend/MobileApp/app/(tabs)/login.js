@@ -23,7 +23,7 @@ function Login() {
 
     function validateForm(username, password) {
         if (username.length > 0 && password.length > 0) {
-            router.push("/home");
+            router.push("/apptabs/home2");
             //GetUser(username, password);
         } else {
             alert("Please enter your email and password");

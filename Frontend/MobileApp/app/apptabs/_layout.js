@@ -4,12 +4,12 @@ import { Ionicons } from "@expo/vector-icons";
 export default function Layout() {
     return (
         <Tabs
-            initialRouteName='home'
+            initialRouteName='home2'
             screenOptions={{
                 headerShown: false,
             }}>
             <Tabs.Screen
-                name='classes'
+                name='selectBathroom'
                 options={{
                     title: "Classes",
                     tabBarIcon: ({ color, size }) => (
@@ -22,7 +22,7 @@ export default function Layout() {
                 }}
             />
             <Tabs.Screen
-                name='workoutplanner'
+                name='bathroomStatus'
                 options={{
                     title: "Workout",
                     tabBarIcon: ({ color, size }) => (
@@ -35,7 +35,7 @@ export default function Layout() {
                 }}
             />
             <Tabs.Screen
-                name='home'
+                name='home2'
                 options={{
                     title: "Home",
                     tabBarIcon: ({ color, size }) => (
@@ -44,24 +44,11 @@ export default function Layout() {
                 }}
             />
             <Tabs.Screen
-                name='reserve'
+                name='reserveSlot'
                 options={{
                     title: "Reserve",
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name='person' color={color} size={size} />
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name='nutrition'
-                options={{
-                    title: "Nutrition",
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons
-                            name='nutrition-outline'
-                            color={color}
-                            size={size}
-                        />
                     ),
                 }}
             />
