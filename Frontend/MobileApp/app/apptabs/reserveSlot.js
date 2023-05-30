@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet, Button,Alert } from 'react-native';
+import tw from 'twrnc';
 
 export default function TimeSlotScreen() {
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -57,7 +58,7 @@ export default function TimeSlotScreen() {
             ]}
             onPress={() => handleTimeslotSelection(timeslot)}
           >
-            <Text style={styles.timeslotText}>{timeslot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+            <Text style={tw`text-sm`}>{timeslot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
           </TouchableOpacity>
         ))}
       </View>
