@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import tw from 'twrnc';
+// context imports
+import { useContext } from 'react';
+import { BathroomContext } from './BathroomContext';
 
 const { width } = Dimensions.get('window');
 
@@ -9,13 +12,18 @@ export default function BathroomSelectionScreen() {
   const [selectedBathroom, setSelectedBathroom] = useState(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
+  // context parts
+  const { updateSelectedBathroom } = useContext(BathroomContext);
+
   const handleBathroomSelection = (bathroom) => {
     setSelectedBathroom(bathroom);
+    updateSelectedBathroom(true);
   };
 
   const handleCancelSelection = () => {
     setSelectedBathroom(null);
     setIsConfirmed(false);
+    updateSelectedBathroom(false);
   };
 
   const renderBathroomSquare = (bathroom) => {
@@ -26,7 +34,7 @@ export default function BathroomSelectionScreen() {
       <TouchableOpacity
         key={bathroom}
         style={[squareStyle, tw`w-40 h-${width / 4} justify-center items-center m-2`]}
-        onPress={() => handleBathroomSelection(bathroom)}
+        onPress={() => {handleBathroomSelection(bathroom)}}
         disabled={isConfirmed}
       >
         <Text style={tw`text-base font-bold text-center`}>{`Bathroom ${bathroom}`}</Text>

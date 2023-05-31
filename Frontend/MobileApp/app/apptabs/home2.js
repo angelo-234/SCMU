@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, Button, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
+// context imports
+import { useContext } from 'react';
+import { BathroomContext } from './BathroomContext';
 
 export default function Home2() {
   const navigation = useNavigation();
-  const [selectedBathroom, setSelectedBathroom] = useState(null);
+
+  // context
+  const { hasSelectedBathroom } = useContext(BathroomContext);
 
   const handleSelectBathroom = () => {
     navigation.navigate('selectBathroom');
-    setSelectedBathroom(true);
   };
 
   const handleCancelReservation = () => {
-    setSelectedBathroom(null);
-    // Add your logic here for canceling the reservation
+    navigation.navigate('bathroomStatus');
   };
 
   const handleViewBathroomStatus = () => {
@@ -27,9 +30,9 @@ export default function Home2() {
 
   return (
     <View style={tw`flex-1 items-center justify-center p-4`}>
-      {selectedBathroom ? (
+      {(hasSelectedBathroom ) ? (
         <View style={tw`items-center`}>
-          <Text style={tw`text-xl font-bold mb-2`}>Bathroom {selectedBathroom}</Text>
+          <Text style={tw`text-xl font-bold mb-2`}>Bathroom </Text>
           <Text style={tw`text-base mb-4`}>Changing animation...</Text>
           <View style={tw`flex-col justify-center w-full`}>
             <TouchableOpacity

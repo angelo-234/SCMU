@@ -1,9 +1,11 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { BathroomContextProvider } from './BathroomContext';
 
 export default function Layout() {
     return (
-        <Tabs
+        <BathroomContextProvider>
+            <Tabs
             initialRouteName='home2'
             screenOptions={{
                 headerShown: false,
@@ -52,6 +54,7 @@ export default function Layout() {
                     ),
                 }}
             />
-        </Tabs>
+            </Tabs>
+        </BathroomContextProvider>
     );
 }

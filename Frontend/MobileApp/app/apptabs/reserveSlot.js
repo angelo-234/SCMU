@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, Button, Alert } from 'react-native';
 import tw from 'twrnc';
+// context imports
+import { useContext } from 'react';
+import { BathroomContext } from './BathroomContext';
 
 export default function TimeSlotScreen() {
   const [selectedSlot, setSelectedSlot] = useState(null);
 
-  const navigation = useNavigation();
+  // context
+  const { hasSelectedBathroom } = useContext(BathroomContext);
 
   // Generate the timeslots for the current day (48 slots)
   const timeslots = [];
@@ -74,7 +78,7 @@ export default function TimeSlotScreen() {
       <Button
         title="Confirm"
         onPress={handleConfirm}
-        disabled={!selectedSlot} // Disable the button if no timeslot is selected
+        disabled={!(selectedSlot && hasSelectedBathroom)} // Disable the button if no timeslot is selected
       />
     </View>
   );
