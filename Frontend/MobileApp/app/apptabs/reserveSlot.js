@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, TouchableOpacity, StyleSheet, Button,Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Button, Alert } from 'react-native';
 import tw from 'twrnc';
 
 export default function TimeSlotScreen() {
@@ -34,8 +34,6 @@ export default function TimeSlotScreen() {
     // Add your logic here to handle the selected timeslot
     Alert.alert("Timeslot submitted")
 
-    //http request to confirm user timeslot.
-
     setSelectedSlot(null); // Reset the selected timeslot after handling
 
     //navigation.navigate("home2");
@@ -44,23 +42,34 @@ export default function TimeSlotScreen() {
   // Get the current date as a string
   const currentDate = new Date().toLocaleDateString();
 
+  // render available timeslots
+  const renderTimeslot = (timeslot) => {
+
+    const isSelected = selectedSlot === timeslot;
+    //const squareStyle = tw.style(isSelected && "border-2 border-blue-500");
+    const squareStyle = tw.style(isSelected ? "border-2 border-blue-500" : "");
+
+    return(
+      <TouchableOpacity
+        key={timeslot}
+        style={[squareStyle, tw`p-2 m-2 bg-gray-200 rounded`]}
+        onPress={() => handleTimeslotSelection(timeslot)}
+      >
+        <Text style={tw`text-sm`}>{timeslot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderAvailableTimeslots = () => {
+    return timeslots.map((timeslot) => renderTimeslot(timeslot));
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{currentDate}</Text>
-      <Text style={styles.subtitle}>Select Timeslot</Text>
-      <View style={styles.timeslotContainer}>
-        {timeslots.map(timeslot => (
-          <TouchableOpacity
-            key={timeslot}
-            style={[
-              styles.timeslot,
-              selectedSlot === timeslot && styles.selectedTimeslot
-            ]}
-            onPress={() => handleTimeslotSelection(timeslot)}
-          >
-            <Text style={tw`text-sm`}>{timeslot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-          </TouchableOpacity>
-        ))}
+    <View style={tw`flex-1 items-center justify-center p-4`}>
+      <Text style={tw`text-lg font-bold mb-2`}>{currentDate}</Text>
+      <Text style={tw`text-base mb-2`}>Select Timeslot</Text>
+      <View style={tw`flex-row flex-wrap justify-center`}>
+        {renderAvailableTimeslots()}
       </View>
       <Button
         title="Confirm"
@@ -70,38 +79,3 @@ export default function TimeSlotScreen() {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  timeslotContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  timeslot: {
-    padding: 10,
-    margin: 5,
-    backgroundColor: '#f2f2f2',
-    borderRadius: 5,
-  },
-  selectedTimeslot: {
-    backgroundColor: 'green',
-  },
-  timeslotText: {
-    fontSize: 16,
-  },
-});

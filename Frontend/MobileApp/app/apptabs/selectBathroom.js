@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import tw from 'twrnc';
 
 const { width } = Dimensions.get('window');
 
@@ -12,18 +13,23 @@ export default function BathroomSelectionScreen() {
     setSelectedBathroom(bathroom);
   };
 
+  const handleCancelSelection = () => {
+    setSelectedBathroom(null);
+    setIsConfirmed(false);
+  };
+
   const renderBathroomSquare = (bathroom) => {
     const isSelected = selectedBathroom === bathroom;
-    const squareStyle = isSelected ? styles.selectedSquare : styles.bathroomSquare;
+    const squareStyle = isSelected ? tw`border-2 border-blue-500` : tw`border-2 border-slate-500`;
 
     return (
       <TouchableOpacity
         key={bathroom}
-        style={[squareStyle]}
+        style={[squareStyle, tw`w-40 h-${width / 4} justify-center items-center m-2`]}
         onPress={() => handleBathroomSelection(bathroom)}
         disabled={isConfirmed}
       >
-        <Text style={styles.bathroomText}>{`Bathroom ${bathroom}`}</Text>
+        <Text style={tw`text-base font-bold text-center`}>{`Bathroom ${bathroom}`}</Text>
       </TouchableOpacity>
     );
   };
@@ -37,82 +43,28 @@ export default function BathroomSelectionScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.rowContainer}>
-          <View style={styles.bathroomContainer}>{renderAvailableBathrooms()}</View>
-        </View>
+    <View style={tw`flex-1 justify-center items-center bg-blue-100 p-4 rounded pt-10`}>
+      <Text style={tw`text-xl font-bold mb-4`}>Select Bathroom</Text>
+      <ScrollView contentContainerStyle={tw`flex-grow w-full p-4`}>
+        <View style={tw`flex-row flex-wrap justify-center items-center`}>{renderAvailableBathrooms()}</View>
       </ScrollView>
       {!isConfirmed && (
-        <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm} disabled={!selectedBathroom}>
-          <Text style={styles.confirmButtonText}>Confirm</Text>
+        <TouchableOpacity
+          style={tw`mt-2 px-4 py-2 bg-blue-500 rounded`}
+          onPress={handleConfirm}
+          disabled={!selectedBathroom}
+        >
+          <Text style={tw`text-white text-base font-bold`}>Confirm</Text>
         </TouchableOpacity>
       )}
       {isConfirmed && (
-        <View style={styles.selectedBathroomContainer}>
-          <Text style={styles.selectedBathroomText}>{`Bathroom ${selectedBathroom} Selected`}</Text>
+        <View style={tw`mt-5`}>
+          <Text style={tw`text-base font-bold text-gray-500`}>{`Bathroom ${selectedBathroom} Selected`}</Text>
+          <TouchableOpacity style={tw`mt-2 px-4 py-2 bg-red-500 rounded`} onPress={handleCancelSelection}>
+            <Text style={tw`text-white text-base font-bold`}>Cancel Selection</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollContainer: {
-    flexGrow: 1,
-  },
-  rowContainer: {
-    flexDirection: 'row',
-  },
-  bathroomContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bathroomSquare: {
-    width: width / 2,
-    height: width / 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'lightgray',
-  },
-  selectedSquare: {
-    width: width / 2,
-    height: width / 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'blue',
-  },
-  bathroomText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  confirmButton: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: 'green',
-    borderRadius: 5,
-  },
-  confirmButtonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  selectedBathroomContainer: {
-    marginTop: 20,
-  },
-  selectedBathroomText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'gray',
-  },
-});
+}
