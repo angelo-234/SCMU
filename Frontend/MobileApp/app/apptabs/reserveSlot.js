@@ -29,6 +29,18 @@ export default function TimeSlotScreen() {
     timeslots.push(timeslotTime);
   }
 
+  // Function to convert timeslots to values from 1 to 48
+  const convertTimeslotToValue = (timeslot) => {
+  const startTime = new Date();
+  startTime.setHours(0, 0, 0, 0); // Set start time to midnight
+  const halfHour = 30 * 60 * 1000; // 30 minutes in milliseconds
+  const differenceInMilliseconds = timeslot.getTime() - startTime.getTime();
+  const differenceInHalfHours = Math.floor(differenceInMilliseconds / halfHour);
+  const value = differenceInHalfHours + 1; // Add 1 to make it 1-based instead of 0-based
+
+  return value.toString().padStart(2, '0'); // Convert value to string and pad with leading zero if necessary
+};
+
   // Function to handle timeslot selection
   const handleTimeslotSelection = (timeslot) => {
     setSelectedSlot(timeslot);
@@ -40,7 +52,7 @@ export default function TimeSlotScreen() {
     // Send HTTP request to handle timeslot cancel
     try {
       const response = await axios.put(
-        "https://localhost:8080//bathroom/reserve/{" + hasSelectedBathroom + "}/{" + hasSelectedTimeslot + "}",
+        "https://localhost:8080//bathroom/reserve/{" + hasSelectedBathroom + "}/{" + convertTimeslotToValue(timeslot) + "}",
         { }
       );
       // Handle response or update UI as needed
@@ -48,7 +60,7 @@ export default function TimeSlotScreen() {
       console.log('Error:', error);
     }
 
-    //set selected timeslot to false
+    //set selected timeslot to null
     updateSelectedTimeslot(null);
     navigation.navigate('home2');
   };
@@ -64,7 +76,7 @@ export default function TimeSlotScreen() {
      // Send HTTP request to handle timeslot confirm
      try {
       const response = await axios.put(
-        "https://localhost:8080//bathroom/reserve/{" + hasSelectedBathroom + "}/{" + hasSelectedTimeslot + "}",
+        "https://localhost:8080//bathroom/reserve/{" + hasSelectedBathroom + "}/{" + convertTimeslotToValue(hasSelectedTimeslot) + "}",
         { }
       );
       // Handle response or update UI as needed
@@ -76,7 +88,7 @@ export default function TimeSlotScreen() {
     Alert.alert("Timeslot submitted")
 
     // context parts
-    updateSelectedTimeslot(selectedSlot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    updateSelectedTimeslot(selectedSlot);
 
     setSelectedSlot(null); // Reset the selected timeslot after handling
 

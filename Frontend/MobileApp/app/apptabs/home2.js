@@ -35,7 +35,7 @@ export default function Home2() {
         <View style={tw`items-center`}>
           <Text style={tw`text-xl font-bold mb-2`}>{`Bathroom ${hasSelectedBathroom}`}</Text>
           {hasSelectedTimeslot && (
-            <Text style={tw`text-base mb-4`}>{`Selected Timeslot: ${hasSelectedTimeslot}`}</Text>
+            <Text style={tw`text-base mb-4`}>{`Selected Timeslot: ${hasSelectedTimeslot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}</Text>
           )}
           <View style={tw`flex-col justify-center w-full`}>
             {hasSelectedTimeslot && (
