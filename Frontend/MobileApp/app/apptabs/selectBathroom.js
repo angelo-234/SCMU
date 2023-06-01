@@ -4,30 +4,39 @@ import tw from 'twrnc';
 // context imports
 import { useContext } from 'react';
 import { BathroomContext } from './BathroomContext';
+//nav
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 export default function BathroomSelectionScreen() {
-  const availableBathrooms = ['Bathroom 1', 'Bathroom 2', 'Bathroom 3', 'Bathroom 4', 'Bathroom 5', 'Bathroom 6', 'Bathroom 7', 'Bathroom 8'];
-  const [selectedBathroom, setSelectedBathroom] = useState(null);
+  const availableBathrooms = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  const [bathroomNumber, setSelectedBathroom] = useState(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   // context parts
   const { updateSelectedBathroom } = useContext(BathroomContext);
+  const { hasSelectedBathroom } = useContext(BathroomContext);
+  const { updateSelectedTimeslot } = useContext(BathroomContext);
+
+  // nav
+  const navigation = useNavigation();
 
   const handleBathroomSelection = (bathroom) => {
     setSelectedBathroom(bathroom);
-    updateSelectedBathroom(true);
+    //updateSelectedBathroom(bathroom);
   };
 
   const handleCancelSelection = () => {
     setSelectedBathroom(null);
     setIsConfirmed(false);
-    updateSelectedBathroom(false);
+    updateSelectedBathroom(null);
+    updateSelectedTimeslot(null);
+    navigation.navigate("home2")
   };
 
   const renderBathroomSquare = (bathroom) => {
-    const isSelected = selectedBathroom === bathroom;
+    const isSelected = bathroomNumber === bathroom;
     const squareStyle = isSelected ? tw`border-2 border-blue-500` : tw`border-2 border-slate-500`;
 
     return (
@@ -35,7 +44,7 @@ export default function BathroomSelectionScreen() {
         key={bathroom}
         style={[squareStyle, tw`w-40 h-${width / 4} justify-center items-center m-2`]}
         onPress={() => {handleBathroomSelection(bathroom)}}
-        disabled={isConfirmed}
+        disabled={hasSelectedBathroom}
       >
         <Text style={tw`text-base font-bold text-center`}>{`Bathroom ${bathroom}`}</Text>
       </TouchableOpacity>
@@ -48,6 +57,8 @@ export default function BathroomSelectionScreen() {
 
   const handleConfirm = () => {
     setIsConfirmed(true);
+    updateSelectedBathroom(bathroomNumber);
+    navigation.navigate("home2")
   };
 
   return (
@@ -60,14 +71,14 @@ export default function BathroomSelectionScreen() {
         <TouchableOpacity
           style={tw`mt-2 px-4 py-2 bg-blue-500 rounded`}
           onPress={handleConfirm}
-          disabled={!selectedBathroom}
+          disabled={hasSelectedBathroom}
         >
           <Text style={tw`text-white text-base font-bold`}>Confirm</Text>
         </TouchableOpacity>
       )}
       {isConfirmed && (
         <View style={tw`mt-5`}>
-          <Text style={tw`text-base font-bold text-gray-500`}>{`Bathroom ${selectedBathroom} Selected`}</Text>
+          <Text style={tw`text-base font-bold text-gray-500`}>{`Bathroom ${bathroomNumber} Selected`}</Text>
           <TouchableOpacity style={tw`mt-2 px-4 py-2 bg-red-500 rounded`} onPress={handleCancelSelection}>
             <Text style={tw`text-white text-base font-bold`}>Cancel Selection</Text>
           </TouchableOpacity>

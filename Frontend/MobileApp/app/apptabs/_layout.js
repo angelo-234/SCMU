@@ -26,6 +26,7 @@ export default function Layout() {
             <Tabs.Screen
                 name='bathroomStatus'
                 options={{
+                    href: null,
                     title: "Workout",
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons

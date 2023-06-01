@@ -9,16 +9,13 @@ export default function Page() {
 
     return (
         <View style={styles.container}>
-            <Image
-                source={require("../../assets/img/logo.png")}
-                style={styles.logo}
-            />
+            
             <View style={styles.background}>
                 <Text h1 style={styles.title}>
-                    Welcome to Our Gym!
+                    Bathroom Management
                 </Text>
                 <Text h3 style={styles.tagline}>
-                    Let's start your fitness journey today.
+                    Making your experience easier...
                 </Text>
                 <Button
                     icon={<Icon name='user' size={15} color='white' />}

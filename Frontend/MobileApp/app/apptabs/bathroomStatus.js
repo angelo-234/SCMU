@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigation } from "@react-navigation/native";
 import tw from 'twrnc';
 import Slider from "@react-native-community/slider";
+// context imports
 
 export default function BathroomStatusScreen() {
 
