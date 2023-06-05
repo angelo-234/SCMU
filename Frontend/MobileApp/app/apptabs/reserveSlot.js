@@ -9,6 +9,7 @@ import { BathroomContext } from './BathroomContext';
 
 
 export default function TimeSlotScreen() {
+  const [hasSelection, setHasSelected] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
 
   //navigation
@@ -31,18 +32,21 @@ export default function TimeSlotScreen() {
 
   // Function to convert timeslots to values from 1 to 48
   const convertTimeslotToValue = (timeslot) => {
-  const startTime = new Date();
-  startTime.setHours(0, 0, 0, 0); // Set start time to midnight
-  const halfHour = 30 * 60 * 1000; // 30 minutes in milliseconds
-  const differenceInMilliseconds = timeslot.getTime() - startTime.getTime();
-  const differenceInHalfHours = Math.floor(differenceInMilliseconds / halfHour);
-  const value = differenceInHalfHours + 1; // Add 1 to make it 1-based instead of 0-based
-
-  return value.toString().padStart(2, '0'); // Convert value to string and pad with leading zero if necessary
+    const startTime = new Date();
+    startTime.setHours(0, 0, 0, 0); // Set start time to midnight
+    const halfHour = 30 * 60 * 1000; // 30 minutes in milliseconds
+    const differenceInMilliseconds = timeslot - startTime.getTime();
+    const differenceInHalfHours = Math.ceil(differenceInMilliseconds / halfHour);
+    const value = differenceInHalfHours + 1; // Add 1 to make it 1-based instead of 0-based
+    if(value < 10)
+      return value.toString().padStart(2, '0');
+    else
+      return value.toString();
 };
 
   // Function to handle timeslot selection
   const handleTimeslotSelection = (timeslot) => {
+    setHasSelected(timeslot);
     setSelectedSlot(timeslot);
   };
 
@@ -52,7 +56,7 @@ export default function TimeSlotScreen() {
     // Send HTTP request to handle timeslot cancel
     try {
       const response = await axios.put(
-        "http://localhost:8080/bathroom/reserve/" + hasSelectedBathroom + "/" + convertTimeslotToValue(timeslot),
+        "http://localhost:8080/bathroom/reserve/" + hasSelectedBathroom + "/"+ hasSelectedBathroom + ""  + convertTimeslotToValue(selectedSlot),
         { }
       );
       // Handle response or update UI as needed
@@ -61,22 +65,26 @@ export default function TimeSlotScreen() {
     }
 
     //set selected timeslot to null
+    setSelectedSlot(null);
     updateSelectedTimeslot(null);
     navigation.navigate('home2');
   };
 
   // Function to handle submitting the timeslot
   const handleConfirm = async () => {
-    if (!selectedSlot) {
+    if (!hasSelection) {
       // Notify the user if no timeslot is selected
       Alert.alert('Error', 'Please select a timeslot.');
       return;
     }
 
-     // Send HTTP request to handle timeslot confirm
-     try {
+    // context parts
+    updateSelectedTimeslot(hasSelection);
+
+    // Send HTTP request to handle timeslot confirm
+    try {
       const response = await axios.put(
-        "http://localhost:8080/bathroom/reserve/" + hasSelectedBathroom + "/" + convertTimeslotToValue(hasSelectedTimeslot),
+        "http://localhost:8080/bathroom/reserve/" + hasSelectedBathroom + "/" + hasSelectedBathroom + "" + convertTimeslotToValue(selectedSlot),
         { }
       );
       // Handle response or update UI as needed
@@ -84,13 +92,9 @@ export default function TimeSlotScreen() {
       console.log('Error:', error);
     }
 
-    // Add your logic here to handle the selected timeslot
+    setHasSelected(null); // Reset the selected timeslot after handling
+
     Alert.alert("Timeslot submitted")
-
-    // context parts
-    updateSelectedTimeslot(selectedSlot);
-
-    setSelectedSlot(null); // Reset the selected timeslot after handling
 
     navigation.navigate("home2");
   };
@@ -132,7 +136,7 @@ export default function TimeSlotScreen() {
       <Button
         title="Confirm"
         onPress={handleConfirm}
-        disabled={!(selectedSlot && hasSelectedBathroom)} // Disable the button if no timeslot is selected
+        disabled={!(hasSelection && hasSelectedBathroom)} // Disable the button if no timeslot is selected
       />
       <Button
         title="Cancel"

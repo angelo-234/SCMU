@@ -50,7 +50,7 @@ export default function Home2() {
                 style={tw`m-1 px-1 py-2 bg-blue-500 rounded`}
                 onPress={handleCancelReservation}
               >
-              <Text style={tw`text-white text-base font-bold text-center`}>Cancel Reservation</Text>
+              <Text style={tw`text-white text-base font-bold text-center`}>Cancel Bathroom</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={tw`m-1 px-1 py-2 bg-blue-500 rounded`}
