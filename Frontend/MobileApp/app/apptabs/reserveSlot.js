@@ -52,7 +52,7 @@ export default function TimeSlotScreen() {
     // Send HTTP request to handle timeslot cancel
     try {
       const response = await axios.put(
-        "https://localhost:8080//bathroom/reserve/" + hasSelectedBathroom + "/" + convertTimeslotToValue(timeslot),
+        "http://localhost:8080/bathroom/reserve/" + hasSelectedBathroom + "/" + convertTimeslotToValue(timeslot),
         { }
       );
       // Handle response or update UI as needed
@@ -76,7 +76,7 @@ export default function TimeSlotScreen() {
      // Send HTTP request to handle timeslot confirm
      try {
       const response = await axios.put(
-        "https://localhost:8080//bathroom/reserve/" + hasSelectedBathroom + "/" + convertTimeslotToValue(hasSelectedTimeslot),
+        "http://localhost:8080/bathroom/reserve/" + hasSelectedBathroom + "/" + convertTimeslotToValue(hasSelectedTimeslot),
         { }
       );
       // Handle response or update UI as needed
