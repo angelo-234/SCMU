@@ -18,8 +18,8 @@
 #include "addons/RTDBHelper.h"
 
 // Insert your network credentials
-#define WIFI_SSID "Madeirinha"
-#define WIFI_PASSWORD "vicas123"
+#define WIFI_SSID "xxx"
+#define WIFI_PASSWORD "xxx"
 
 // Insert Firebase project API Key
 #define API_KEY "AIzaSyAngjAnqhIPt4nLpfeyu4xVnEwO9DVmmUE"
