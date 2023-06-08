@@ -4,7 +4,9 @@ import axios from 'axios';
 import { useNavigation } from "@react-navigation/native";
 import tw from 'twrnc';
 import Slider from "@react-native-community/slider";
-// context imports
+import { firebase } from "../../config";
+import { useContext } from 'react';
+import { BathroomContext } from './BathroomContext';
 
 export default function BathroomStatusScreen() {
 
@@ -21,6 +23,36 @@ export default function BathroomStatusScreen() {
   const [newTemp, setNewTemperature] = useState(20);
   const disabled = temperature === newTemp;
 
+  // firebase realtime database stuff
+  const { hasSelectedBathroom } = useContext(BathroomContext);
+
+  const getValues = () => {
+    firebase.database().ref("/wc"+hasSelectedBathroom+"/aquecedor").once("value")
+      .then(snapshot => {
+        //console.log("Data: ", snapshot.val())
+        setHeatingOn(snapshot.val())
+      });
+
+    firebase.database().ref("/wc"+hasSelectedBathroom+"/desembacador").once("value")
+      .then(snapshot => {
+        //console.log("Data: ", snapshot.val())
+        setCleanerOn(snapshot.val())
+      });
+
+    firebase.database().ref("/wc"+hasSelectedBathroom+"/humidade").once("value")
+      .then(snapshot => {
+        //console.log("Data: ", snapshot.val())
+        setHumidity(snapshot.val())
+      });
+
+    firebase.database().ref("/wc"+hasSelectedBathroom+"/temp").once("value")
+      .then(snapshot => {
+        //console.log("Data: ", snapshot.val())
+        setTemperature(snapshot.val())
+      });
+  }
+
+  getValues();
   // aux
 
   const heatingTitle = heatingOn ? 'Switch Off Heating' : 'Switch On Heating';
@@ -28,53 +60,18 @@ export default function BathroomStatusScreen() {
 
   const handleToggleHeating = async () => {
     const newHeatingStatus = !heatingOn;
-    setHeatingOn(newHeatingStatus);
-
-    // Send HTTP request to update heating status
-    try {
-      const response = await axios.post(
-        'https://your-api-url/updateHeatingStatus',
-        { heatingOn: newHeatingStatus }
-      );
-      // Handle response or update UI as needed
-    } catch (error) {
-      console.log('Error:', error);
-    }
+    
+    firebase.database().ref("/wc1/").update({aquecedor:newHeatingStatus}).then(() => getValues());
   };
 
   const handleMirrorCleaner = async () => {
     const newCleanerStatus = !cleanerOn;
-    setCleanerOn(newCleanerStatus);
 
-    // Send HTTP request for mirror cleaner command
-    try {
-      const response = await axios.post(
-        'https://your-api-url/switchOnMirrorCleaner'
-      );
-      // Handle response or update UI as needed
-    } catch (error) {
-      console.log('Error:', error);
-    }
+    firebase.database().ref("/wc1/").update({desembacador:newCleanerStatus}).then(() => getValues());
   };
 
   const handleSetTemperature = async () => {
-
     Alert.alert("Temperature Set Succesfully")
-
-    // Send HTTP request to set the temperature
-    try {
-      const response = await axios.post(
-        'https://your-api-url/setTemperature',
-        { temperature }
-      );
-      // Handle response or update UI as needed
-    } catch (error) {
-      console.log('Error:', error);
-    }
-  };
-
-  const handleTemperatureChange = (value) => {
-    setTemperature(value);
   };
 
   const handleNewTemperatureChange = (value) => {
@@ -84,7 +81,7 @@ export default function BathroomStatusScreen() {
   return (
     <View style={tw`flex-1 p-4 items-center justify-center bg-blue-100 `}>
       <View style={tw`flex-row items-center mb-5`}>
-        <Button title="Back" onPress={handleGoBack} />
+        <Button title="Back" onPress={handleGoBack} color="#007AFF" />
         <Text style={tw`text-2xl font-bold ml-4`}>Bathroom Status</Text>
       </View>
       <View style={tw`mb-5`}>
@@ -117,17 +114,17 @@ export default function BathroomStatusScreen() {
       </View>
       <View style={tw`flex-row justify-center w-full`}>
         <TouchableOpacity
-                style={tw`m-1 px-1 py-2 bg-blue-500 rounded`}
-                onPress={handleToggleHeating}
-              >
-                <Text style={tw`text-white text-base font-bold`}>{heatingTitle}</Text>
+          style={tw`m-1 px-1 py-2 bg-blue-500 rounded`}
+          onPress={handleToggleHeating}
+        >
+          <Text style={tw`text-white text-base font-bold`}>{heatingTitle}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-                style={tw`m-1 px-1 py-2 bg-blue-500 rounded`}
-                onPress={handleMirrorCleaner}
-              >
-                <Text style={tw`text-white text-base font-bold`}>{mirrorTitle}</Text>
-              </TouchableOpacity>
+          style={tw`m-1 px-1 py-2 bg-blue-500 rounded`}
+          onPress={handleMirrorCleaner}
+        >
+          <Text style={tw`text-white text-base font-bold`}>{mirrorTitle}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

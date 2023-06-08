@@ -30,7 +30,7 @@ export default function Home2() {
   };
 
   return (
-    <View style={tw`flex-1 items-center justify-center p-4`}>
+    <View style={tw`flex-1 items-center justify-center p-4  bg-blue-100`}>
       {(hasSelectedBathroom ) ? (
         <View style={tw`items-center`}>
           <Text style={tw`text-xl font-bold mb-2`}>{`Bathroom ${hasSelectedBathroom}`}</Text>

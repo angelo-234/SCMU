@@ -13,7 +13,7 @@ export default function Layout() {
             <Tabs.Screen
                 name='selectBathroom'
                 options={{
-                    title: "Classes",
+                    title: "Bathrooms",
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons
                             name='calendar-outline'
@@ -51,7 +51,7 @@ export default function Layout() {
                 options={{
                     title: "Reserve",
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name='person' color={color} size={size} />
+                        <Ionicons name='time-outline' color={color} size={size} />
                     ),
                 }}
             />

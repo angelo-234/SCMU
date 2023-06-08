@@ -5,8 +5,8 @@ export const BathroomContext = createContext();
 
 // Create the BathroomContextProvider component
 export const BathroomContextProvider = ({ children }) => {
-  const [hasSelectedBathroom, setSelectedBathroom] = useState(false);
-  const [hasSelectedTimeslot, setSelectedTimeslot] = useState(false);
+  const [hasSelectedBathroom, setSelectedBathroom] = useState(null);
+  const [hasSelectedTimeslot, setSelectedTimeslot] = useState(null);
 
   // Define a function to update the selected bathroom
   const updateSelectedBathroom = (bathroom) => {
