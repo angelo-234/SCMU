@@ -9,6 +9,7 @@ import { BathroomContext } from './BathroomContext';
 
 
 export default function TimeSlotScreen() {
+  const [hasSelection, setHasSelected] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
 
   //navigation
@@ -45,6 +46,7 @@ export default function TimeSlotScreen() {
 
   // Function to handle timeslot selection
   const handleTimeslotSelection = (timeslot) => {
+    setHasSelected(timeslot);
     setSelectedSlot(timeslot);
   };
 
@@ -73,7 +75,7 @@ export default function TimeSlotScreen() {
 
   // Function to handle submitting the timeslot
   const handleConfirm = async () => {
-    if (!selectedSlot) {
+    if (!hasSelection) {
       // Notify the user if no timeslot is selected
       Alert.alert('Error', 'Please select a timeslot.');
       return;
