@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TouchableOpacity, Alert} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from "@react-navigation/native";
@@ -61,13 +61,13 @@ export default function BathroomStatusScreen() {
   const handleToggleHeating = async () => {
     const newHeatingStatus = !heatingOn;
     
-    firebase.database().ref("/wc1/").update({aquecedor:newHeatingStatus}).then(() => getValues());
+    firebase.database().ref("/wc"+hasSelectedBathroom).update({aquecedor:newHeatingStatus}).then(() => getValues());
   };
 
   const handleMirrorCleaner = async () => {
     const newCleanerStatus = !cleanerOn;
 
-    firebase.database().ref("/wc1/").update({desembacador:newCleanerStatus}).then(() => getValues());
+    firebase.database().ref("/wc"+hasSelectedBathroom).update({desembacador:newCleanerStatus}).then(() => getValues());
   };
 
   const handleSetTemperature = async () => {
@@ -77,6 +77,27 @@ export default function BathroomStatusScreen() {
   const handleNewTemperatureChange = (value) => {
     setNewTemperature(value);
   };
+
+  /** 
+  firebase.database().ref("/wc"+hasSelectedBathroom).on('child_changed', (childSnapshot, prevChildKey) => { 
+    firebase.database().ref("/wc"+hasSelectedBathroom+"/humidade").once("value")
+      .then(snapshot => {
+        //console.log("Data: ", snapshot.val())
+        setHumidity(snapshot.val())
+      });
+
+    firebase.database().ref("/wc"+hasSelectedBathroom+"/temp").once("value")
+      .then(snapshot => {
+        //console.log("Data: ", snapshot.val())
+        setTemperature(snapshot.val())
+      });
+    firebase.database().ref("/wc"+hasSelectedBathroom).off("child_changed");
+   } );
+   */
+
+   useEffect(() => {
+    getValues();
+  });
 
   return (
     <View style={tw`flex-1 p-4 items-center justify-center bg-blue-100 `}>

@@ -59,7 +59,6 @@ export default function TimeSlotScreen() {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: {},
       mode: "cors",
     })
       .then((response) => {
@@ -87,7 +86,6 @@ export default function TimeSlotScreen() {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: {},
       mode: "cors",
     })
       .then((response) => {
